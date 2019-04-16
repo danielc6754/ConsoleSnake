@@ -40,12 +40,9 @@ int main() {
 		bool bDead = false;
 
 		// Input Variables
-		bool bKey[4];
-		bKey[2] = false;
-		bKey[3] = false;
+		bool bKey[4] = {false};
 		while (!bDead) {
 			// Timing =====================================================
-			//this_thread::sleep_for(200ms);
 			auto t1 = chrono::system_clock::now();
 			while ((chrono::system_clock::now() - t1) < ((nSnakeDirection % 2 == 1) ? 120ms : 200ms)) {
 				// Input ======================================================
@@ -65,6 +62,9 @@ int main() {
 					if (nSnakeDirection == -1)
 						nSnakeDirection = 3;
 				}
+				
+				bKey[0] = bKey[2];
+				bKey[1] = bKey[3];
 			}
 
 			// Game Logic =================================================
