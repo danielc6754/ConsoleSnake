@@ -24,6 +24,10 @@ int main() {
 	SetConsoleActiveScreenBuffer(hConsole);
 	DWORD dwByteWritten = 0;
 
+	INPUT_RECORD ev; // Keyboard input event
+	HANDLE hstdin = GetStdHandle(STD_INPUT_HANDLE); // Get console input handle
+	GetConsoleMode(hstdin, &dwByteWritten);
+
 	// Start game loop
 	bool bContinue = true;
 	while (bContinue) {
@@ -41,9 +45,10 @@ int main() {
 
 		// Input Variables
 		bool bKey[4] = {false};
+
 		while (!bDead) {
 			// Timing =====================================================
-			auto t1 = chrono::system_clock::now();
+			/*auto t1 = chrono::system_clock::now();
 			while ((chrono::system_clock::now() - t1) < ((nSnakeDirection % 2 == 1) ? 120ms : 200ms)) {
 				// Input ======================================================
 				bKey[0] = (0x8000 & GetAsyncKeyState((unsigned char)('\x25'))) != 0;
@@ -65,7 +70,33 @@ int main() {
 				
 				bKey[0] = bKey[2];
 				bKey[1] = bKey[3];
+			}*/
+			// Timing =====================================================
+			this_thread::sleep_for(100ms);
+			
+			// Input ======================================================
+			// If kbhit
+			if (WaitForSingleObject(hstdin, 0) == WAIT_OBJECT_0) {
+				DWORD count;
+				
+				// Get input events
+				ReadConsoleInput(hstdin, NULL, 1, &count);
+
+				if (ev.EventType == KEY_EVENT && !ev.Event.KeyEvent.bKeyDown)
+					switch (ev.Event.KeyEvent.wVirtualKeyCode) {
+					case '\x25':
+						nSnakeDirection++;
+						if (nSnakeDirection == 4)
+							nSnakeDirection = 0;
+						break;
+					case '\x27':
+						nSnakeDirection--;
+						if (nSnakeDirection == -1)
+							nSnakeDirection = 3;
+						break;
+					}
 			}
+
 
 			// Game Logic =================================================
 			// Update Snake Position
