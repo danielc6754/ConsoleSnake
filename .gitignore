@@ -3,3 +3,4 @@
 Debug/*
 .vs/*
 x64/*
+enc_temp_folder/*
