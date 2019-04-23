@@ -4,8 +4,7 @@
 	Finished Creating game based on tutorial
 	Changed that need to be make:
 		FIXED: fix input speed issue (not accurate input speed too fast or not responsive)
-		FIXED: Allows for double tap
-		+ Fix input lose that occurs occasionally
+		+ fix input speed to allow for double tap (allow for no space snaking)
 */
 
 #include "pch.h"
