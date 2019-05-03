@@ -80,9 +80,9 @@ int main() {
 			DWORD count; // Ignore
 			
 			// If kbhit
-			if (WaitForSingleObject(hstdin, 0) == WAIT_OBJECT_0) {
+			if (WaitForSingleObject(hstdin, 0) == WAIT_OBJECT_0 && GetNumberOfConsoleInputEvents(hstdin, &count)) {
 				// Get input events
-				ReadConsoleInput(hstdin, &ev, 1, &count);
+				ReadConsoleInput(hstdin, &ev, 2, &count);
 
 				if (ev.EventType == KEY_EVENT && !ev.Event.KeyEvent.bKeyDown)
 					switch (ev.Event.KeyEvent.wVirtualKeyCode) {
@@ -98,10 +98,7 @@ int main() {
 						break;
 					}
 			}
-			
-			if (GetNumberOfConsoleInputEvents(hstdin, &count))
-				FlushConsoleInputBuffer(hstdin);
-
+			 
 			// Game Logic =================================================
 			// Update Snake Position
 			switch (nSnakeDirection) {
